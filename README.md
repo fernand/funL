@@ -21,6 +21,7 @@ In funL, the query would look like
 The date span [2014,2015[ is specified on the second line so funL figures out that you want to bind the second part of the query to only in quarters in 2014, so it figures out that the first line is the quarter preceding any of these respective 2014 quarters.
 
 This is what using funL looks like:
+
 1. You type a query on a local console
 2. The query is serialized and written to S3
 3. A new Streaming Map job is sent to a Hadoop cluster (these cluster have a local binary of the Haskell module which is then run in Hadoop Streaming mode). The first Map job grabs the relevant events (you don't have to look for events outside a date range), groups them by user, and orders them chronologically
