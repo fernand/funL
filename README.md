@@ -22,15 +22,15 @@ The date span [2014,2015[ is specified on the second line so funL figures out th
 
 This is what using funL looks like:
 
-1. You type a query on a local console
-2. The query is serialized and written to S3
-3. A new Streaming Map job is sent to a Hadoop cluster (these cluster have a local binary of the Haskell module which is then run in Hadoop Streaming mode). The first Map job grabs the relevant events (you don't have to look for events outside a date range), groups them by user, and orders them chronologically
-4. A second Map job runs your query for a user by looking whether they fall in the funnel you defined
-5. The output is then fed in a Streaming Reduce job to count the number of users by date range
+1. You type a query on a local console.
+2. The query is serialized and written to S3.
+3. A new Streaming Map job is sent to a Hadoop cluster (these clusters have a local binary of the Haskell module which is then run in Hadoop Streaming mode). The first Map job grabs the relevant events (you don't have to look for events outside a date range), groups them by user, and orders them chronologically.
+4. A second Map job runs your query for a user by looking whether they fall in the funnel you defined.
+5. The output is then fed in a Streaming Reduce job to count the number of users by date range.
 6. The query results end up on S3 and are pushed to your console.
 
 The Haskell module does 2, 3, 4, and 5.
-I have not included the glue code which makes it work on EMR (generating MapReduce jobs, copying files to nodes, returning the query result, local query console) because there’s too much sensitive company information.
+I have not included the glue code which makes it work on EMR (generating MapReduce jobs, copying files to nodes, returning the query result, local query console).
 
 So the code you’re looking at includes the query parsing logic and the translation logic from a query to actual streaming Map or Reduce job.
 
