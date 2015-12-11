@@ -1,18 +1,22 @@
 The premise is that it is really hard with existing tools (SQL-like languages or Mixpanel) to make ad-hoc funnel-type queries on large streams of events which are user (or object) centric. funL runs on top of any Hadoop Streaming cluster.
 
 Say that you have a lot of JSON event data (on S3 or HDFS) in this form:
-> {"event": "view", "properties":{source:"social", "time":1329263748, "distinct_id":22}}
-> {"event": "signup", "properties":{source:"social", "time":1329263888, "distinct_id":22}}
-> {"event": "view", "properties":{source:"email", "time":1329277748, "distinct_id":22}}
-> {"event": "click", "properties":{source:"email", "time":1329277794, "distinct_id":22}}
+```
+{"event": "view", "properties":{source:"social", "time":1329263748, "distinct_id":22}}
+{"event": "signup", "properties":{source:"social", "time":1329263888, "distinct_id":22}}
+{"event": "view", "properties":{source:"email", "time":1329277748, "distinct_id":22}}
+{"event": "click", "properties":{source:"email", "time":1329277794, "distinct_id":22}}
+```
 
 Where `distinct_id` is a user or some kind of object sending events.
 
 You want to know the number of users who joined in Q1 2014, and in who in Q2 returned to view a page from an email you sent and then also clicked on something. Doing this in SQL would require a bunch of big joins (if you have a table per event) and some date manipulation. It's definitely doable but becomes increasingly complicated as you add more events in your funnel.
 
 In funL, the query would look like
-> 1 quarter [signup()];
-> 1 quarter [view(source='email'), click()] ("2014","2015")
+```
+1 quarter [signup()];
+1 quarter [view(source='email'), click()] ("2014","2015")
+```
 
 The date span [2014,2015[ is specified on the second line so funL figures out that you want to bind the second part of the query to only in quarters in 2014, so it figures out that the first line is the quarter preceding any of these respective 2014 quarters.
 
